@@ -1,0 +1,65 @@
+{% extends "base/main.html" %}
+
+{% block content %}
+
+<main>
+    <section>
+        <div class="bg-cyan-100 mt-33 h-220 p-7 justify-center items-center">
+            <!-- Earning -->
+            <h1 class="text-center text-2xl font-bold mt-3 text-blue-950">Create an Account</h1>
+            <form class="mt-5 border-1 border-blue-950 px-6 py-4 flex flex-col gap-4 items-center " method="POST">
+                {% csrf_token %}
+                <!-- firstname -->
+                <div class="flex flex-col justify-center items-center">
+                    <label class="text-xl font-bold" for="firstname">First Name:</label>
+                    <input class="border-1 px-3 py-1 text-lg outline-none" type="text" name="firstname" required>
+                </div>
+                <!-- lastname -->
+                <div class="flex flex-col justify-center items-center">
+                    <label class="text-xl font-bold" for="firstname">Last Name:</label>
+                    <input class="border-1 px-3 py-1 text-lg outline-none" type="text" name="lastname">
+                </div>
+                <!-- username -->
+                <div class="flex flex-col justify-center items-center">
+                    <label class="text-xl font-bold" for="firstname">Username:</label>
+                    <input class="border-1 px-3 py-1 text-lg outline-none" type="text" name="username" required>
+                </div>
+
+                <!-- email -->
+                  <!-- username -->
+                <div class="flex flex-col justify-center items-center">
+                    <label class="text-xl font-bold" for="firstname">Email:</label>
+                    <input class="border-1 px-3 py-1 text-lg outline-none" type="text" name="email" required>
+                </div>
+                <!-- password -->
+                <div class="flex flex-col justify-center items-center">
+                    <label class="text-xl font-bold" for="firstname">Password:</label>
+                    <input class="border-1 px-3 py-1 text-lg outline-none" type="password" name="password">
+                </div>
+                 <!-- confirm password -->
+                <div class="flex flex-col justify-center items-center">
+                    <label class="text-xl font-bold" for="firstname">Confirm Password:</label>
+                    <input class="border-1 px-3 py-1 text-lg outline-none" type="password" name="confirm-password" required>
+                </div>
+
+                <!-- coupon code -->
+                <div class="flex flex-col justify-center items-center">
+                    <label class="text-xl font-bold" for="firstname">Coupon Code:</label>
+                    <input class="border-1 px-3 py-1 text-lg outline-none" type="text" name="coupon" required>
+                </div>
+
+                <input class="bg-cyan-700 px-11 py-2 text-lg text-white" type="submit" value="create an account">
+
+                <div>
+                    <span class="text-lg">Already have an account?</span>
+                    <a href="{% url "base:login" %}" class="text-lg underline text-blue-900">Login</a>
+                </div>
+                
+            </form>
+            
+        </div>
+       </div>
+    </section>
+</main>
+  
+{% endblock content %}

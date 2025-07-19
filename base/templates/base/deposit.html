@@ -1,0 +1,116 @@
+{% extends "base/main.html" %} {% load static %} {% block content %}
+
+<main>
+  <section>
+    <div class="bg-cyan-100 mt-33 h-180 p-7 justify-center items-center">
+      <!-- Earning -->
+      <h1 class="text-center text-2xl font-bold mt-3 text-blue-950">Deposit</h1>
+      <div class="mt-5 flex justify-center flex-col items-center">
+        <span class="text-md font-bold italic text-blue-950"></span>
+        <span
+          onclick="copyToClipboard(this)"
+          data-wallet="0x4d008d7730edd12ec1aa33c9764b36dc28b03043"
+          class="mt-2 text-md flex gap-2 border p-2 rounded-md cursor-pointer items-center justify-center"
+          >0x4d008d7730edd12ec1aa33c9764b36dc28b03043<img class="w-5
+          cursor-pointer" src="{% static "images/copy.png" %}" alt="" srcset="">
+        </span>
+
+        <div class="mt-4 flex flex-col gap-4 text-justify">
+          <span class="text-red-600 font-bold"
+            >Please follow the instructions below to complete your deposit:
+          </span>
+          <ol class="flex flex-col gap-3 text-justify">
+            <li>
+              <strong>1.</strong>
+              <strong
+                >Send your deposit to the wallet address provided above</strong
+              >.
+            </li>
+            <li>
+              <strong>2.</strong>
+              <strong
+                >Only use your whitelisted wallet to make the deposit</strong
+              >. Transactions from unapproved wallets
+              <strong>will not be accepted</strong> and may result in
+              <strong>permanent loss of funds</strong>. <br />
+              <span class="italic"
+                >(before initiating a deposit transaction make sure the wallet
+                you are sending the fund from is the same as the one you submit
+                on your profile).</span
+              >
+            </li>
+            <li>
+              <strong>3.</strong> Once your transaction is complete,
+              <strong>fill out the form below</strong> to notify the admin and
+              begin the verification process.
+            </li>
+          </ol>
+        </div>
+      </div>
+      <form
+        class="mt-5 border-1 border-blue-950 px-8 py-4 flex flex-col gap-4 items-center"
+        action=""
+      >
+        <!-- firstname -->
+        <div class="flex flex-col justify-center items-center gap-2">
+          <label class="text-xl font-bold" for="firstname">Deposit:</label>
+          <span class="italic text-sm"
+            >enter the amount you send or you want to deposit below:</span
+          >
+          <input
+            class="border-1 px-3 py-1 text-lg outline-none"
+            type="text"
+            name="amount"
+          />
+          <span>Minimum: $3 </span>
+        </div>
+        <input
+          class="bg-cyan-700 px-13 py-2 text-lg text-white"
+          type="submit"
+          value="Notify Admin"
+        />
+      </form>
+    </div>
+    <div class="bg-cyan-300 w-full h-200">
+      <h1 class="px-6 py-3 bg-blue-800 text-white text-lg">Deposit History</h1>
+      <div class="bg-cyan-200 h-full w-full overflow-scroll px-8 py-3 mb-15">
+        {% for deposit in user_deposits %}
+        <div
+          class="px-7 py-4 border-1 mt-3 flex justify-between bg-gray-100 items-center"
+        >
+          <div>
+            <span class="text-lg font-bold text-blue-950"
+              >${{deposit.amount}}</span
+            >
+            <br />
+            <span class="italic text-amber-500">{{deposit.status}}</span>
+          </div>
+          <span class="text-sm italic"
+            >{{deposit.created_at | timesince}} ago</span
+          >
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  function copyToClipboard(span) {
+    const address = span.getAttribute("data-wallet");
+    navigator.clipboard.writeText(address).then(() => {
+      const originalText = span.innerText;
+
+      span.innerText = "Copied";
+      span.classList.remove("bg-gray-200", "text-black");
+      span.classList.add("bg-green-500", "text-white");
+
+      setTimeout(() => {
+        span.innerText = originalText;
+        span.classList.remove("bg-green-500", "text-white");
+        span.classList.add("bg-gray-200", "text-black");
+      }, 2000);
+    });
+  }
+</script>
+{% endblock content %}

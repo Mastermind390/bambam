@@ -1,0 +1,52 @@
+{% load static %}
+{% if request.user.is_authenticated %}
+  <header class="flex justify-between p-6 items-center bg-blue-950 fixed top-0 right-0 left-0 mb-10">
+            <div>
+                <a href="{% url "base:home" %}">
+                    <img class="w-20 rounded-full" src="{% static "images/logo.png" %}" alt="" srcset="">
+                </a>
+            </div>
+            <div class="flex gap-3 flex-col">
+                <div class="flex gap-3 bg-white p-1 items-center justify-center">
+                    <span class="font-black text-lg">Balance:</span>
+                    <span class="text-2xl font-black">${{request.user.userprofile.balance}}</span>
+                </div>
+                <div class="mt-2">
+                    <a class="bg-cyan-600 px-5 py-2 font-black text-white" href="{% url "base:deposit" %}">Deposit</a>
+                    <a class="bg-red-800 px-5 py-2 font-black text-white" href="{% url "base:withdraw" %}">Withdraw</a>
+                </div>
+            </div>
+            <div class="absolute -bottom-5 left-0 right-0 bg-amber-50 ">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+        </div>
+</header>
+{% else %}
+<header class="flex justify-between p-6 items-center bg-blue-950 fixed top-0 right-0 left-0 mb-10">
+            <div>
+                <a href="{% url "base:home" %}">
+                    <img class="w-20 rounded-full" src="{% static "images/logo.png" %}" alt="" srcset="">
+                </a>
+            </div>
+            <div class="flex gap-3 flex-col">
+                <div class="mt-2">
+                    <a class="bg-cyan-600 px-5 py-2 font-black text-white" href="{% url "base:deposit" %}">Register</a>
+                    <a class="bg-red-800 px-5 py-2 font-black text-white" href="{% url "base:withdraw" %}">Login</a>
+                </div>
+            </div>
+            <div class="absolute -bottom-5 left-0 right-0 bg-amber-50 ">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+        </div>
+</header>
+{% endif %}

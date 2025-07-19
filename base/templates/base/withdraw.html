@@ -1,0 +1,58 @@
+{% extends "base/main.html" %} {% block content %}
+
+<main>
+  <section>
+    <div class="bg-cyan-100 mt-33 h-75 p-7 justify-center items-center">
+      <!-- Earning -->
+      <h1 class="text-center text-2xl font-bold mt-3 text-blue-950">
+        Withdraw
+      </h1>
+      <form
+        class="mt-5 border-1 border-blue-950 px-8 py-4 flex flex-col gap-4 items-center"
+        action=""
+        method="post"
+      >
+        {% csrf_token %}
+        <!-- amount -->
+        <div class="flex flex-col justify-center items-center">
+          <label class="text-xl font-bold" for="firstname">Amount:</label>
+          <input
+            class="border-1 px-3 py-1 text-lg outline-none"
+            type="text"
+            name="amount"
+          />
+          <span>minimum: $10</span>
+        </div>
+        <input
+          class="bg-cyan-700 px-13 py-2 text-lg text-white cursor-pointer"
+          type="submit"
+          value="Request Withdrawal"
+        />
+      </form>
+    </div>
+    <div class="bg-cyan-300 w-full h-200">
+      <h1 class="px-6 py-3 bg-blue-800 text-white text-lg">
+        Withdrawal History
+      </h1>
+      <div
+        class="bg-cyan-200 h-full w-full overflow-scroll px-8 py-3 mb-10 flex flex-col gap-4"
+      >
+        {% for withdraw in withdraws %}
+        <div
+          class="px-7 py-4 border-1 flex justify-between bg-gray-100 items-center"
+        >
+          <div>
+            <span class="text-lg font-bold">{{withdraw.amount}}</span> <br />
+            <span class="italic text-amber-600">{{withdraw.status}}</span>
+          </div>
+          <span class="text-sm italic"
+            >{{withdraw.requested_at | timesince}} ago</span
+          >
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</main>
+
+{% endblock content %}

@@ -1,0 +1,13 @@
+{% load static %}
+<nav class="fixed bottom-0 left-0 right-0 flex justify-between h-20 px-5 py-2 bg-blue-950">
+    <!--  -->
+    <a class="flex flex-col items-center justify-center text-white" href="{% url "base:feed" %}"> <img class="w-11" src="{% static "images/feed.png" %}" alt="" srcset="">  Feed</a>
+    <!--  -->
+    <a class="flex flex-col items-center justify-center text-white" href="{% url "base:predictions" %}"> <img class="w-11" src="{% static "images/trading.png" %}" alt="" srcset="">predicitions</a>
+    <!--  -->
+    <a class="flex flex-col items-center justify-center text-white" href="{% url "base:history" %}"> <img class="w-11" src="{% static "images/history.png" %}" alt="" srcset="">History</a>
+    <!--  -->
+    <a class="flex flex-col items-center justify-center text-white" href="{% url "base:profile" %}"> <img class="w-11" src="{% static "images/invest.png" %}" alt="" srcset="">Invest</a>
+    <!--  -->
+    <a class="flex flex-col items-center justify-center text-white" href="{% url "base:profile" %}"> <img class="w-11" src="{% static "images/profile.png" %}" alt="" srcset="">Profile</a>
+</nav>
