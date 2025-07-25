@@ -11,6 +11,9 @@ class UserProfile(models.Model):
     referal_earning = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     date_joined = models.DateTimeField(auto_now_add=True)
     wallet = models.CharField(max_length=200, default="")
+    investment = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    interest = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    last_interest_update = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username}  |  {self.balance}"

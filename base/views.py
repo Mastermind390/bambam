@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from base.models import DailyMarketData, UserProfile, UserAccountDetail, Prediction, Deposit, Withdrawal, ReferralCode
+from base.models import DailyMarketData, UserProfile, Prediction, Deposit, Withdrawal, ReferralCode
 from django.contrib import messages
 from django.contrib.auth.models import User
 import os
@@ -12,6 +12,10 @@ import requests
 from django.db.models import Sum
 import string
 import random
+from decimal import Decimal, ROUND_HALF_UP
+from datetime import date
+from django.utils import timezone
+from base.models import UserProfile
 
 load_dotenv()
 
@@ -30,8 +34,8 @@ def register(request):
         return redirect("base:feed")
 
     if request.method == "POST":
-        firstname = request.POST.get("firstname").lower().strip()
-        lastname = request.POST.get("lastname").lower().strip()
+        # firstname = request.POST.get("firstname").lower().strip()
+        # lastname = request.POST.get("lastname").lower().strip()
         username = request.POST.get("username").lower().strip()
         email = request.POST.get("email").lower().strip()
         password = request.POST.get("password")
@@ -60,20 +64,27 @@ def register(request):
             user = User.objects.create_user(
             username=username,
             password=password,
-            first_name=firstname,
-            last_name=lastname,
+            # first_name=firstname, 2J4NQ9UR
+            # last_name=lastname,
             email=email,
             )
-            referal = code.user.userprofile.balance
-            print(firstname, lastname, username, password, confirm_password, coupon)
-            print(referal)
-            user.save()
+            referrer_profile = code.user.userprofile
+            referrer_profile.balance += Decimal(1.5)
+            code.user.userprofile.referal_earning += Decimal(1.5)
+            referrer_profile.save()
+            code.status = "used"
+            code.save()
+            userprofile = UserProfile.objects.get(user=user)
+            userprofile.investment += Decimal(5.00)
+            userprofile.balance += Decimal(2.00)
+            userprofile.save()
             login(request, user)
             return redirect("base:feed")
         else:
             messages.error(request, "password does not match")
             return redirect("base:register")
 
+# 2J4NQ9UR
     
     return render(request, "base/register.html")
 
@@ -97,6 +108,8 @@ def user_login(request):
         else:
             messages.error(request, "Invalid credentials")
             return redirect("base:feed")
+        
+        
 
     return render(request, "base/login.html")
 
@@ -246,7 +259,8 @@ def withdraw(request):
             return redirect("base:withdraw")
 
         if balance >= amount:
-            balance -= amount
+            userprofile.balance -= amount
+            userprofile.save()
             withdraw = Withdrawal.objects.create(
                 user=user,
                 amount=amount,
@@ -263,7 +277,7 @@ def withdraw(request):
     
 
     context = {
-        
+        "withdraws" : withdraws,
     }
 
     return render(request, "base/withdraw.html", context)
@@ -276,7 +290,7 @@ def generate_code(request):
     userprofile = UserProfile.objects.get(user=user)
     balance = userprofile.balance
 
-    if balance < 10:
+    if balance < 5:
         messages.error(request, "insufficient fund")
         return redirect("base:profile")
 
@@ -290,6 +304,10 @@ def generate_code(request):
 
     code = get_unique_code()
     print(code)
+    print(userprofile.balance)
+    userprofile.balance -= 5
+    userprofile.save()
+    print(userprofile.balance)
     ReferralCode.objects.create(user=user, referral_code=code, status="unused")
     messages.success(request, "code generated successfully")
     return redirect("base:profile")
@@ -298,10 +316,76 @@ def generate_code(request):
 @login_required(login_url="base:login")
 def view_codes(request):
     user = request.user
-    codes = ReferralCode.objects.filter(user=user).order_by("-status")
+    codes = ReferralCode.objects.filter(user=user)
 
     context = {
         "codes" : codes,
     }
 
     return render(request, "base/codes.html", context)
+
+
+def invest(request):
+    user = request.user
+    userprofile = UserProfile.objects.get(user=user)
+    investment = userprofile.investment
+    interest = Decimal('0.015') * Decimal(investment)
+    daily_interest  = interest.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)  
+    user_interest = userprofile.interest
+    balance = userprofile.balance
+    
+
+    if userprofile.last_interest_update != date.today():
+        userprofile.interest += daily_interest
+        userprofile.last_interest_update = date.today()
+        userprofile.save()
+
+    investment_balance = Decimal(investment) + Decimal(user_interest)
+    
+    # 2J4NQ9UR
+
+    if request.method == "POST":
+        hidden = request.POST.get("hidden")
+        top_up_amount = request.POST.get("top_up_amount")
+        # transfer_amount = request.POST.get("transfer_amount")
+        print(hidden, top_up_amount)
+
+
+        if hidden == "topup":
+            try:
+                top_up_amount = int(top_up_amount)
+            except (ValueError, TypeError):
+                messages.error(request, "Invalid amount")
+                return redirect("base:invest")
+            
+
+            if  top_up_amount < 5:
+                messages.error(request, "minimum amount to top up is $5")
+                return redirect("base:invest")
+            elif balance < Decimal(top_up_amount):
+                messages.error(request, "insufficient balance. top up balance then try again")
+                return redirect("base:invest")
+            else:
+                userprofile.investment += Decimal(top_up_amount)
+                userprofile.save()
+                print(top_up_amount)
+                return redirect("base:invest")
+                
+        
+
+        return redirect("base:invest")
+
+        
+    print(daily_interest)
+    print(user_interest)
+    print(investment)
+    print(investment_balance)
+
+    context = {
+        "investment" : investment,
+        "interest" : daily_interest,
+        "investment_balance" : investment_balance,
+        "user_interest" : user_interest
+    }
+
+    return render(request, "base/invest.html", context)

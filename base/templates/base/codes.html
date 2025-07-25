@@ -8,9 +8,9 @@
        <section>
             <div class="items-center justify-center p-2 bg-cyan-100 mt-33 h-200 mb-22">
                 <div class="flex flex-col  h-full gap-3 p-3 m-auto overflow-y-scroll bg-cyan-200 mb-30">
-                    {% for code in code  %}
+                    {% for code in codes  %}
                     <div>
-                        <div class="flex justify-between px-30 mt-5 border-1 border-cyan-400 py-4">
+                        <div class="flex justify-between px-10 mt-5 border-1 border-cyan-400 py-4">
                             <span>Code: <br> <strong> {{code.referral_code}}</strong> </span>
                             <span><span>Status: <br> <strong>{{code.status}}</strong> </span>
                         </div>

@@ -1,5 +1,113 @@
-{% extends "base/main.html" %}
+{% extends "base/main.html" %} {% block content %}
 
-{% block content %}
-  
+<section>
+  <div class="bg-cyan-100 mt-30 p-2 justify-center items-center mb-22">
+    <div class="h-300 px-3 overflow-y-scroll flex flex-wrap justify-center">
+      <div class="mt-5 flex flex-col items-center justify-center px-4">
+        <div class="flex gap-2 items-center">
+          <div class="mt-3 flex flex-col p-5">
+            <span class="text-md font-black text-blue-950">Subscription</span>
+            <span
+              class="text-4xl flex items-center gap-2 font-extrabold mt-2 text-red-950"
+              ><span class="text-2xl">$</span>{{investment}}</span
+            >
+          </div>
+
+          <div class="h-30 w-0.5 bg-black"></div>
+
+          <div class="mt-3 flex flex-col p-5">
+            <span class="text-lg font-black text-blue-950"
+              >Earned Interest</span
+            >
+            <span
+              class="text-4xl flex items-center gap-2 font-extrabold mt-2 text-red-950"
+              ><span class="text-2xl">$</span>{{user_interest}}</span
+            >
+          </div>
+        </div>
+        <span class="mb-2 italic">%1.5 Interest percentage per day</span>
+        <div class="h-0.5 w-full bg-black"></div>
+
+        <form action="" class="mt-5" method="post">
+          {% csrf_token %}
+          <div class="flex flex-col">
+            <!-- <span class="text-xl flex items-center gap-2"
+              >Investment Balance:
+              <span class="text-xl font-black">${{user_interest}}</span></span
+            > -->
+            <!-- <span class="text-xl flex items-center gap-2"
+              >Total Balance:
+              <span class="text-xl font-black">$5.30</span></span
+            > -->
+          </div>
+          <div class="mt-3 flex items-center gap-5">
+            <div>
+              <label for="" class="text-lg mb-2">Top up Subscription</label>
+              <br />
+              <input
+                type="text"
+                name="top_up_amount"
+                placeholder="enter amount to topup"
+                class="border-1 mt-2 p-2"
+              />
+              <br />
+              <span class="text-lg">Minimum: $5</span>
+              <input type="text" name="hidden" value="topup" hidden />
+            </div>
+            <input
+              type="submit"
+              value="Top-up"
+              class="bg-blue-950 px-4 py-2 text-white rounded-lg"
+            />
+          </div>
+
+          <div class="mt-5">
+            <h1 class="text-2xl font-black text-blue-950">Subscribe to Earn</h1>
+
+            <span class="text-lg"
+              >Tired of guessing whether crypto will go up or down each day?
+              You're not alone. While daily predictions can be exciting, they
+              also come with risk — and for beginners, it often feels like a
+              50/50 coin toss. <br /><br />
+
+              That’s why we created an easier, smarter way to grow your money.
+              With our hands-free investment plan, you don’t have to predict
+              anything. Just subscribe, sit back, and let your money work for
+              you automatically. <br /><br />
+
+              Instead of stressing over charts or market trends, you’ll earn
+              daily returns through proven strategies, carefully managed behind
+              the scenes. No trading knowledge needed. No daily decisions. Just
+              consistent, stress-free earnings. <br /><br />
+
+              Start building wealth the easy way by making your money work for
+              you.
+              <br /><br />
+            </span>
+          </div>
+
+          <!-- <div class="mt-3 flex items-center gap-5">
+            <div>
+              <label for="" class="text-lg mb-2">Withdraw Interest</label>
+              <br />
+              <input
+                type="text"
+                placeholder="enter amount to transfer"
+                name="transfer_amount"
+                class="border-1 mt-2 p-2"
+              />
+              <input type="text" name="hidden" value="transfer" hidden />
+            </div>
+            <input
+              type="submit"
+              value="Transfer"
+              class="bg-blue-950 px-4 py-2 text-white rounded-lg"
+            />
+          </div> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock content %}
