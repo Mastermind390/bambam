@@ -122,6 +122,9 @@ def user_logout(request):
 @login_required(login_url="base:login")
 def feed(request):
     market_data = DailyMarketData.objects.all()
+    user = request.user
+    userprofile = UserProfile.objects.get(user=user)
+    
 
     if request.method == "POST":
         prediction = request.POST.get("prediction")
@@ -135,7 +138,7 @@ def feed(request):
             messages.error(request, "Invalid stake amount")
             return redirect("base:feed")
         
-        if amount < 100 or amount <= 0:
+        if amount < 1 or amount <= 0:
             messages.error(request, "stake amount cannot be less than 100")
             return redirect("base:feed")
         
@@ -148,6 +151,8 @@ def feed(request):
             amount = amount,
             prediction = prediction,
         )
+        userprofile.balance -= amount
+        userprofile.save()
         prediction.save()
         return redirect("base:feed")
         
