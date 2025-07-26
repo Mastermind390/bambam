@@ -1,4 +1,4 @@
-from .models import DailyMarketData, Prediction
+from .models import DailyMarketData, Prediction, UserProfile
 from .utils import get_kline
 
 def save_market_data():
@@ -22,6 +22,7 @@ def evaluate_predictions():
     """
     get all predictions, check whether they are correct or wrong and reward users accordingly.
     """
+
     try:
         market_data = get_kline.process_data()
         predictions = Prediction.objects.all()
@@ -29,17 +30,21 @@ def evaluate_predictions():
             predicted_symbol = prediction.symbol
             predicted_price = prediction.close
             predicted_direction = prediction.prediction
-        for data in market_data:
-            symbol = data['symbol']
-            close = data['close']
-            if symbol == predicted_symbol:
-                if (predicted_direction == "UP" and close > predicted_price) or \
-                   (predicted_direction == "DOWN" and close < predicted_price):
-                    prediction.result = "WIN"
-                    prediction.amount += 1
-                else:
-                    prediction.result = "LOSE"
-                prediction.save()
+            status = prediction.status
+            for data in market_data:
+                symbol = data['symbol']
+                close = data['close']
+                if symbol == predicted_symbol:
+                    if (predicted_direction == "higher" and status == "inplay" and close > predicted_price) or \
+                    (predicted_direction == "lower" and status == "inplay" and close < predicted_price):
+                        prediction.result = "win"
+                        winning =  prediction.amount + prediction.amount
+                        prediction.user.userprofile.balance += winning
+                        prediction.status = "settled"
+                        prediction.save()
+                    else:
+                        prediction.result = "lose"
+                        prediction.save()
                 print(f"Prediction for {predicted_symbol} is {prediction.result}. Amount: {prediction.amount}")
     except Exception as e:
         print(f"Error evaluating predictions: {e}")
