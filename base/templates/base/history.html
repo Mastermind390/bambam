@@ -24,10 +24,11 @@
                     <div class="flex flex-col justify-center gap-1">
                         <span class="italic font-bold text-gray-500 rounded-md">{{prediction.status}}</span>
                         {% if prediction.result == "lose" %}
-                        <span class="font-bold text-blue-950">Staked: <span>{{prediction.amount}}</span> </span>
+                        <span class="font-bold text-blue-950">Staked: <span>${{prediction.amount}}.00</span> </span><span class="font-bold text-blue-950">result: <span class="text-red-600 italic">{{prediction.result}}</span> </span>
                         {% else %}
-                        <span class="font-bold text-blue-950">Staked: <span>{{prediction.amount}}</span> <br >
-                        <span class="font-bold text-blue-950">Won: <span>{{prediction.amount|multiply:2}}</span> </span>
+                        <span class="font-bold text-blue-950">Staked: <span>{{prediction.amount}}.00</span> <br >
+                        <span class="font-bold text-blue-950">Won: <span >{{prediction.amount|multiply:2}}</span> </span>
+                        </span><span class="font-bold text-blue-950">result: <span class="text-green-600">{{prediction.result}}</span> </span>
                         {% endif %}
                         
                         

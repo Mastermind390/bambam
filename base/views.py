@@ -16,6 +16,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from datetime import date
 from django.utils import timezone
 from base.models import UserProfile
+from django_user_agents.utils import get_user_agent
 
 load_dotenv()
 
@@ -23,12 +24,20 @@ load_dotenv()
 # Create your views here.
 def home(request):
 
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     if request.user.is_authenticated:
         return redirect("base:feed")
 
     return render(request, "base/index.html")
 
 def register(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
 
     if request.user.is_authenticated:
         return redirect("base:feed")
@@ -91,6 +100,10 @@ def register(request):
 
 def user_login(request):
 
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     if request.user.is_authenticated:
         return redirect("base:feed")
 
@@ -121,6 +134,11 @@ def user_logout(request):
 
 @login_required(login_url="base:login")
 def feed(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     market_data = DailyMarketData.objects.all()
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
@@ -154,6 +172,7 @@ def feed(request):
         userprofile.balance -= amount
         userprofile.save()
         prediction.save()
+        messages.success(request, "prediction submit successfully")
         return redirect("base:feed")
         
         
@@ -167,6 +186,11 @@ def feed(request):
 
 @login_required(login_url="base:login")
 def profile(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
     user_balance = userprofile.balance
@@ -187,6 +211,11 @@ def profile(request):
 
 @login_required(login_url="base:login")
 def history(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     predictions = Prediction.objects.filter(user=request.user, status="settled")
 
 
@@ -199,6 +228,10 @@ def history(request):
 @login_required(login_url="base:login")
 def prediction(request):
 
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     predictions = Prediction.objects.filter(user=request.user, status="inplay")
 
     context = {
@@ -210,6 +243,11 @@ def prediction(request):
 
 @login_required(login_url="base:login")
 def deposit(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
     user_deposits = Deposit.objects.filter(user=user, status="completed").order_by("-created_at")[:10]
@@ -244,6 +282,11 @@ def deposit(request):
 
 @login_required(login_url="base:login")
 def withdraw(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     user = request.user
     withdraws = Withdrawal.objects.filter(user=user)
     userprofile = UserProfile.objects.get(user=user)
@@ -288,9 +331,13 @@ def withdraw(request):
     return render(request, "base/withdraw.html", context)
 
 
-
 @login_required(login_url="base:login")
 def generate_code(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
     balance = userprofile.balance
@@ -320,6 +367,11 @@ def generate_code(request):
 
 @login_required(login_url="base:login")
 def view_codes(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     user = request.user
     codes = ReferralCode.objects.filter(user=user)
 
@@ -331,6 +383,11 @@ def view_codes(request):
 
 
 def invest(request):
+
+    user_agent = get_user_agent(request)
+    if not user_agent.is_mobile:
+        return render(request, 'base/desktop_blocked.html')
+
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
     investment = userprofile.investment

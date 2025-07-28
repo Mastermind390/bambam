@@ -4,7 +4,7 @@ from base.views import home, feed, register, user_login, user_logout, profile, p
 app_name = 'base'
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", user_login, name="home"),
     path("register/", register, name="register"),
     path("login/", user_login, name="login"),
     path("logout/", user_logout, name="logout"),

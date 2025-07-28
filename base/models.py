@@ -52,7 +52,7 @@ class Prediction(models.Model):
     status = models.CharField(max_length=10, choices=[("settled", "settled"), ("inplay  ", "inplay")], default="inplay")
 
     def __str__(self):
-        return f" {self.user.first_name} |  {self.symbol} | Close: {self.close} | Prediction: {self.prediction} | Result: {self.amount} | {self.result}"
+        return f" {self.user.first_name} |  {self.symbol} | Close: {self.close} | Prediction: {self.prediction} | Result: {self.amount} | {self.result} |  {self.status}"
 
 
 
