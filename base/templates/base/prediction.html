@@ -6,12 +6,12 @@
 
  <main>
        <section>
-            <div class="items-center justify-center p-2 bg-cyan-100 mt-33 h-200 mb-22">
+            <div class="items-center justify-center p-2 bg-cyan-100 mt-33 h-320 mb-22">
                 <div class="flex flex-col items-center h-full gap-3 p-3 m-auto overflow-y-scroll bg-cyan-200 mb-30">
                     {% for prediction in predictions %}
-                    <div class="flex items-center justify-center bg-gray-100 rounded-lg gap-15 border-1 w-80 h-35">
+                    <div class="flex items-center justify-center bg-gray-100 rounded-lg gap-15 border-1 w-80 h-45">
                     <div class="">
-                        <h1 class="text-2xl font-bold text-blue-950">{{prediction.symbol}}</h1>
+                        <h1 class="text-xl font-bold text-blue-950">{{prediction.symbol}}</h1>
                         <span>{{prediction.close}}</span>
                         <br>
                         {% if prediction.prediction == "higher" %}

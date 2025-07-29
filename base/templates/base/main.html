@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static "src/style.css" %}">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>prediction</title>
+    <title>BamBam | Make Money the easy way</title>
 </head>
 <body>
     {% include "base/header.html" %}
-   {% block content %}
+    {% block content %}
 
-   {% endblock content %}
-   {% if request.user.is_authenticated %}
-   {% include "base/navbar.html" %}
-   {% endif %}
+    {% endblock content %}
+    {% if request.user.is_authenticated %}
+    {% include "base/navbar.html" %}
+    {% endif %}
    
 </body>
 </html>
