@@ -10,7 +10,7 @@
             <div class="flex gap-3 flex-col">
                 <div class="flex gap-3 bg-white p-1 items-center justify-center">
                     <span class="font-black text-lg">Balance:</span>
-                    <span class="text-2xl font-black">${{ request.user.userprofile.balance|add:request.user.userprofile.interest }}</span>
+                    <span class="text-2xl font-black">&#8358;{{ request.user.userprofile.balance|add:request.user.userprofile.interest }}</span>
                 </div>
                 <div class="mt-2">
                     <a class="bg-cyan-600 px-5 py-2 font-black text-white" href="{% url "base:deposit" %}">Deposit</a>

@@ -10,7 +10,7 @@ class UserProfile(models.Model):
     winning = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     referal_earning = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     date_joined = models.DateTimeField(auto_now_add=True)
-    wallet = models.CharField(max_length=200, default="")
+    # wallet = models.CharField(max_length=200, default="")
     investment = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     interest = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     last_interest_update = models.DateField(null=True, blank=True)
@@ -77,12 +77,12 @@ class Deposit(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
-    wallet = models.CharField(max_length=100, unique=True)
+    reference = models.CharField(max_length=100, unique=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.wallet} - {self.amount} - {self.status}"
+        return f"{self.amount} - {self.status}"
 
 
 

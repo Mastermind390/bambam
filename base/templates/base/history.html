@@ -1,46 +1,63 @@
-{% extends "base/main.html" %}
-{% load math_filters %}
+{% extends "base/main.html" %} {% load math_filters %} {% block content %}
 
+<main>
+  <section>
+    <div class="items-center justify-center p-2 bg-cyan-100 mt-33 h-200 mb-22">
+      <div
+        class="flex flex-col items-center h-full gap-3 p-3 m-auto overflow-y-scroll bg-cyan-200 mb-30"
+      >
+        {% for prediction in predictions %}
+        <div
+          class="flex items-center justify-center bg-gray-100 rounded-lg gap-15 border-1 w-80 h-35"
+        >
+          <div class="">
+            <h1 class="text-2xl font-bold text-blue-950">
+              {{prediction.symbol}}
+            </h1>
+            <span>{{prediction.close}}</span>
+            <br />
+            {% if prediction.prediction == "higher" %}
+            <p
+              class="px-1 py-1 m-0 mt-2 text-center text-white bg-green-600 rounded-md"
+            >
+              {{prediction.prediction}}
+            </p>
+            {% else %}
+            <p
+              class="px-1 py-1 m-0 mt-2 text-center text-white bg-red-500 rounded-md"
+            >
+              {{prediction.prediction}}
+            </p>
+            {% endif %}
+          </div>
+          <div class="flex flex-col justify-center gap-1">
+            <span class="italic font-bold text-gray-500 rounded-md"
+              >{{prediction.status}}</span
+            >
+            {% if prediction.result == "lose" %}
+            <span class="font-bold text-blue-950"
+              >Staked: <span>&#8358;{{prediction.amount}}.00</span> </span
+            ><span class="font-bold text-blue-950"
+              >result:
+              <span class="text-red-600 italic">{{prediction.result}}</span>
+            </span>
+            {% else %}
+            <span class="font-bold text-blue-950"
+              >Staked: <span>&#8358;{{prediction.amount}}.00</span> <br />
+              <span class="font-bold text-blue-950"
+                >Won: <span>&#8358;{{prediction.amount|multiply:2}}</span>
+              </span> </span
+            ><span class="font-bold text-blue-950"
+              >result: <span class="text-green-600">{{prediction.result}}</span>
+            </span>
+            {% endif %}
+          </div>
+        </div>
 
-{% block content %}
-
- <main>
-       <section>
-            <div class="items-center justify-center p-2 bg-cyan-100 mt-33 h-200 mb-22">
-                <div class="flex flex-col items-center h-full gap-3 p-3 m-auto overflow-y-scroll bg-cyan-200 mb-30">
-                    {% for prediction in predictions %}
-                    <div class="flex items-center justify-center bg-gray-100 rounded-lg gap-15 border-1 w-80 h-35">
-                    <div class="">
-                        <h1 class="text-2xl font-bold text-blue-950">{{prediction.symbol}}</h1>
-                        <span>{{prediction.close}}</span>
-                        <br>
-                        {% if prediction.prediction == "higher" %}
-                        <p class="px-1 py-1 m-0 mt-2 text-center text-white bg-green-600 rounded-md">{{prediction.prediction}}</p>
-                        {% else %}
-                        <p class="px-1 py-1 m-0 mt-2 text-center text-white bg-red-500 rounded-md">{{prediction.prediction}}</p>
-                        {% endif %}
-                        
-                    </div>
-                    <div class="flex flex-col justify-center gap-1">
-                        <span class="italic font-bold text-gray-500 rounded-md">{{prediction.status}}</span>
-                        {% if prediction.result == "lose" %}
-                        <span class="font-bold text-blue-950">Staked: <span>${{prediction.amount}}.00</span> </span><span class="font-bold text-blue-950">result: <span class="text-red-600 italic">{{prediction.result}}</span> </span>
-                        {% else %}
-                        <span class="font-bold text-blue-950">Staked: <span>{{prediction.amount}}.00</span> <br >
-                        <span class="font-bold text-blue-950">Won: <span >{{prediction.amount|multiply:2}}</span> </span>
-                        </span><span class="font-bold text-blue-950">result: <span class="text-green-600">{{prediction.result}}</span> </span>
-                        {% endif %}
-                        
-                        
-                    </div>
-                    </div>
-                      
-                    {% endfor %}
-                    
-                    
-                </div>
-            </div>
-       </section>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 </main>
-  
+
 {% endblock content %}

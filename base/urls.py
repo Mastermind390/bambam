@@ -1,5 +1,5 @@
 from django.urls import path
-from base.views import home, feed, register, user_login, user_logout, profile, prediction, history, deposit, withdraw, generate_code, view_codes, invest
+from base.views import home, feed, register, user_login, user_logout, profile, prediction, history, deposit, withdraw, generate_code, view_codes, invest, initialize_payment, paystack_success
 
 app_name = 'base'
 
@@ -17,4 +17,6 @@ urlpatterns = [
     path("generate_code/", generate_code, name="generate_code"),
     path("refferal-codes/", view_codes, name="refferal-codes"),
     path("invest/", invest, name="invest"),
+    path("initialize_payment/", initialize_payment, name="initialize_payment"),
+    path("paystack_success/", paystack_success, name="paystack_success"),
 ]

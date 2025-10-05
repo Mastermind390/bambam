@@ -10,46 +10,51 @@
                 <div class="mt-5 flex flex-col gap-3">
                     <div class="flex justify-between px-9">
                         <span class="text-xl font-bold text-cyan-950">Total Wins</span>
-                        <span class="text-xl font-bold text-cyan-950">${{user_total_wins}}</span>
+                        <span class="text-xl font-bold text-cyan-950">&#8358;{{user_total_wins}}</span>
                     </div>
                     <hr>
                     <div class="flex justify-between px-9">
                         <span class="text-xl font-bold text-cyan-950">Total Withdrawal</span>
-                        <span class="text-xl font-bold text-cyan-950">${{user_withdrawal}}.00</span>
+                        <span class="text-xl font-bold text-cyan-950">&#8358;{{user_withdrawal}}.00</span>
                     </div>
                     <hr>
                     <div class="flex justify-between px-9">
                         <span class="text-xl font-bold text-cyan-950">Referal Earnings</span>
-                        <span class="text-xl font-bold text-cyan-950">${{referal_earnings}}</span>
+                        <span class="text-xl font-bold text-cyan-950">&#8358;{{referal_earnings}}</span>
                     </div>
                     <hr>
                 </div>
                 <!-- add bank details -->
                 <div class="mt-5 flex justify-center flex-col items-center">
                 <div class="flex flex-col gap-3 px-5">
-                     <h1 class="text-center text-2xl font-bold text-blue-950">Whitelist Wallet Address</h1>
-                    <span class="text-justify font-semibold">⚠️ Important –     Wallet         Whitelisting Required
-                        Before making any deposit, please whitelist your wallet address below. This will be the only wallet allowed for both deposits and withdrawals.
-
-                        ✅  Double-check to ensure the address is correct before submitting.
-                        ❌ Do NOT deposit from a different wallet — funds sent from unwhitelisted wallets will not be recognized.
-
-                        Once whitelisted, all withdrawals will be sent only to that same wallet address.
+                     <h1 class="text-center text-2xl font-bold text-blue-950">Submit your Withdrawal Account Details</h1>
+                    <span class="text-justify font-semibold">⚠️ Important – make sure you account details are entered correctly because you can only entered it once and there will not be an opportunity to correct. Also, make sure your full name matches the name you registered with, as any difference between your full name and the one you registered with can result to your withdrawal request being rejected.
                     </span>
                 </div>
-                {% if wallet != "" %}
+                {% if account_number %}
                   <div class="mt-5 flex items-center flex-col">
-                    <span class="text-center text-md italic font-bold">Your Deposit and Withdrawal Wallet Address:</span>
+                    <span class="text-center text-md italic font-bold">Your withdrawal account is:</span>
                     <span 
-                    onclick="copyToClipboard(this)"
-                    data-wallet="{{wallet}}"
-                    class="mt-2 text-md flex gap-2 border p-2 rounded-md cursor-pointer">{{wallet}} <img class="w-5 cursor-pointer" src="{% static "images/copy.png" %}" alt="" srcset=""></span>
+                    class="mt-2 text-sm flex gap-2 border p-2 rounded-md cursor-pointer">{{account_number}}</span>
+                    <span 
+                    class="mt-2 text-sm flex gap-2 border p-2 rounded-md cursor-pointer">{{bank_name}}</span>
+                    <span 
+                    class="mt-2 text-sm flex gap-2 border p-2 rounded-md cursor-pointer">{{full_name}}</span>
                 </div>
                 {% else %}
                 
-                <form class="mt-5 flex flex-col" action="">
+                <form class="mt-5 flex flex-col" action="" method="post">
+                    {% csrf_token %}
                     <div class="flex flex-col gap-3 items-center">
-                        <label class="text-xl" for="bank">Enter Your Wallet Address:</label>
+                        <label class="text-xl" for="bank">Enter Your Bank Name:</label>
+                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="" id="">
+                    </div>
+                    <div class="flex flex-col gap-3 items-center">
+                        <label class="text-xl" for="bank">Enter Your Account Number:</label>
+                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="" id="">
+                    </div>
+                    <div class="flex flex-col gap-3 items-center">
+                        <label class="text-xl" for="bank">Enter Your Full Name:</label>
                         <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="" id="">
                     </div>
                     <input class="bg-blue-950 p-2 text-white text-lg mt-4" type="submit" value="Submit">
@@ -68,7 +73,7 @@
                             🔔 You’ll earn 30% bonus for every friend who signs up using your code!
                         </strong> <br> <br>
 
-                        ⚠️ Note: You must have at least <strong>$5 in your account</strong> to generate a referral code.
+                        ⚠️ Note: You must have at least <strong>&#8358;8,000 in your account</strong> to generate a referral code.
 
                         Let’s grow and earn together — start sharing now!
                         </span>
