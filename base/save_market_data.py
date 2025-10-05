@@ -1,6 +1,7 @@
-from .models import DailyMarketData, Prediction, UserProfile
+from .models import DailyMarketData, Prediction, UserProfile, User
 from .utils import get_kline
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
+from datetime import date
 
 def save_market_data():
     """
@@ -33,7 +34,7 @@ def evaluate_predictions():
             predicted_direction = prediction.prediction
             status = prediction.status
             if status == "settled":
-                print(f"prediction by {prediction.user.username} for {prediction.symbol} has been settled")
+                # print(f"prediction by {prediction.user.username} for {prediction.symbol} has been settled")
                 continue
             else:
                 for data in market_data:
@@ -49,7 +50,30 @@ def evaluate_predictions():
                             prediction.save()
                         else:
                             prediction.result = "lose"
+                            prediction.status = 'settled'
                             prediction.save()
-                    print(f" {prediction.user.username} Prediction for {predicted_symbol} is {prediction.result}. Amount: {prediction.amount}")
+                    # print(f" {prediction.user.username} Prediction for {predicted_symbol} is {prediction.result}. Amount: {prediction.amount}")
+        print('done evaluating')
     except Exception as e:
         print(f"Error evaluating predictions: {e}")
+
+
+
+def calculate_interest():
+    users = User.objects.all()
+
+    for user in users:
+        userprofile = UserProfile.objects.get(user=user)
+        investment = userprofile.investment
+        interest = Decimal('0.015') * Decimal(investment)
+        daily_interest  = interest.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+        if userprofile.last_interest_update != date.today():
+            userprofile.interest += daily_interest
+            userprofile.last_interest_update = date.today()
+            userprofile.balance += daily_interest
+            userprofile.save()
+        
+        print(f'{user.first_name} daily interest updated by {daily_interest}')
+
+    

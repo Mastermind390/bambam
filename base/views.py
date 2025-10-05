@@ -203,11 +203,16 @@ def profile(request):
     try:
         account_details = UserAccountDetail.objects.get(user=user)
     except UserAccountDetail.DoesNotExist:
-        account_detail = None
+        account_details = None
 
-    account_number = account_details.account_number
-    bank_name = account_details.bank_name
-    full_name = account_details.full_name
+    account_digit = None
+    bank_name = None
+    full_name = None
+    
+    if account_details:
+        account_digit = account_details.account_number
+        bank_name = account_details.bank_name
+        full_name = account_details.full_name
 
     if request.method == "POST":
         full_name = request.POST.get("full_name")
@@ -215,16 +220,18 @@ def profile(request):
         bank_name = request.POST.get("bank_name")
 
         UserAccountDetail.objects.update_or_create(
-            user = request.user,
-            bank_name = bank_name,
-            account_number = account_number,
-            full_name = full_name
-        )
+        user=request.user,
+        defaults={
+            "bank_name": bank_name,
+            "account_number": account_number,
+            "full_name": full_name
+        }
+    )
 
     context = {
         "user_balance" : user_balance,
         "user_total_wins" : user_total_wins,
-        "account_number" : account_number,
+        "account_number" : account_digit,
         "bank_name" : bank_name,
         "full_name" : full_name,
         "user_withdrawal" : user_withdrawal,
@@ -416,19 +423,9 @@ def invest(request):
 
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
-    investment = userprofile.investment
-    interest = Decimal('0.015') * Decimal(investment)
-    daily_interest  = interest.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)  
+    investment = userprofile.investment 
     user_interest = userprofile.interest
     balance = userprofile.balance
-    
-
-    if userprofile.last_interest_update != date.today():
-        userprofile.interest += daily_interest
-        userprofile.last_interest_update = date.today()
-        userprofile.save()
-
-    investment_balance = Decimal(investment) + Decimal(user_interest)
     
     # 2J4NQ9UR
 
@@ -464,16 +461,9 @@ def invest(request):
 
         return redirect("base:invest")
 
-        
-    # print(daily_interest)
-    # print(user_interest)
-    # print(investment)
-    # print(investment_balance)
 
     context = {
         "investment" : investment,
-        "interest" : daily_interest,
-        "investment_balance" : investment_balance,
         "user_interest" : user_interest
     }
 

@@ -31,7 +31,7 @@
                     <span class="text-justify font-semibold">⚠️ Important – make sure you account details are entered correctly because you can only entered it once and there will not be an opportunity to correct. Also, make sure your full name matches the name you registered with, as any difference between your full name and the one you registered with can result to your withdrawal request being rejected.
                     </span>
                 </div>
-                {% if account_number %}
+                {% if account_number == "" %}
                   <div class="mt-5 flex items-center flex-col">
                     <span class="text-center text-md italic font-bold">Your withdrawal account is:</span>
                     <span 
@@ -43,19 +43,19 @@
                 </div>
                 {% else %}
                 
-                <form class="mt-5 flex flex-col" action="" method="post">
+                <form class="mt-5 flex flex-col" action="" method="POST">
                     {% csrf_token %}
                     <div class="flex flex-col gap-3 items-center">
                         <label class="text-xl" for="bank">Enter Your Bank Name:</label>
-                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="" id="">
+                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="bank_name" id="">
                     </div>
                     <div class="flex flex-col gap-3 items-center">
                         <label class="text-xl" for="bank">Enter Your Account Number:</label>
-                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="" id="">
+                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="account_number" id="">
                     </div>
                     <div class="flex flex-col gap-3 items-center">
                         <label class="text-xl" for="bank">Enter Your Full Name:</label>
-                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="" id="">
+                        <input class="border-1 border-black outline-none w-80 p-2 h-10 scroll-py-12" type="text" name="full_name" id="">
                     </div>
                     <input class="bg-blue-950 p-2 text-white text-lg mt-4" type="submit" value="Submit">
                 </form>
