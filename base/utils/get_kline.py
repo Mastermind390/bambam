@@ -9,7 +9,6 @@ SECRET_KEY = os.getenv("API_SECRET")
 
 client = HTTP(demo=True, api_key=API_KEY,api_secret=SECRET_KEY)
 
-# print(datetime.datetime.now().today().strftime("%Y-%m-%d"))
 
 def get_klines_data(client, symbol, interval = 'D'):
     try:
@@ -21,7 +20,7 @@ def get_klines_data(client, symbol, interval = 'D'):
 
 
 def process_data():
-    symbols = ["BTCUSDT", "ETHUSDT", "SUIUSDT", "SOLUSDT", "XRPUSDT", "DOGEUSDT", "LTCUSDT", "ADAUSDT", "DOTUSDT", "WIFUSDT", "TRXUSDT", "AVAXUSDT", "LINKUSDT", "UNIUSDT", "BCHUSDT", "XLMUSDT", "FILUSDT", "LINKUSDT", "AAVEUSDT", "XMRUSDT", "ALGOUSDT", "ATOMUSDT", "VETUSDT", "THETAUSDT"]
+    symbols = ["BTCUSDT", "ETHUSDT", "SUIUSDT", "SOLUSDT", "XRPUSDT", "DOGEUSDT", "LTCUSDT", "ADAUSDT", "DOTUSDT", "WIFUSDT"]
     # todays_date = datetime.datetime.now().today().strftime("%Y-%m-%d")
 
     market_data = []

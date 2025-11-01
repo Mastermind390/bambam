@@ -34,20 +34,25 @@
             <span class="italic font-bold text-gray-500 rounded-md"
               >{{prediction.status}}</span
             >
+            <span class="italic font-bold text-gray-500 rounded-md"
+              >{{prediction.res}}</span
+            >
             {% if prediction.result == "lose" %}
-            <span class="font-bold text-blue-950"
+            <!-- <span class="font-bold text-blue-950"
               >Staked: <span>&#8358;{{prediction.amount}}.00</span> </span
-            ><span class="font-bold text-blue-950"
+            > -->
+            <span class="font-bold text-blue-950"
               >result:
               <span class="text-red-600 italic">{{prediction.result}}</span>
             </span>
             {% else %}
-            <span class="font-bold text-blue-950"
+            <!-- <span class="font-bold text-blue-950"
               >Staked: <span>&#8358;{{prediction.amount}}.00</span> <br />
               <span class="font-bold text-blue-950"
                 >Won: <span>&#8358;{{prediction.amount|multiply:2}}</span>
               </span> </span
-            ><span class="font-bold text-blue-950"
+            > -->
+            <span class="font-bold text-blue-950"
               >result: <span class="text-green-600">{{prediction.result}}</span>
             </span>
             {% endif %}

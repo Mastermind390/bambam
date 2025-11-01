@@ -142,36 +142,37 @@ def feed(request):
 
     market_data = DailyMarketData.objects.all()
     user = request.user
+    user_predictions = Prediction.objects.filter(user=user, status='inplay')
     userprofile = UserProfile.objects.get(user=user)
     
+    prediction_symbol = [sym.symbol for sym in user_predictions]
 
     if request.method == "POST":
         prediction = request.POST.get("prediction")
-        amount = request.POST.get("amount")
+        # amount = request.POST.get("amount")
         symbol = request.POST.get("symbol")
         close = request.POST.get("close")
 
-        try:
-            amount = int(request.POST.get("amount"))
-        except (ValueError, TypeError):
-            messages.error(request, "Invalid stake amount")
-            return redirect("base:feed")
+        # try:
+        #     amount = int(request.POST.get("amount"))
+        # except (ValueError, TypeError):
+        #     messages.error(request, "Invalid stake amount")
+        #     return redirect("base:feed")
         
-        if amount < 500 or amount <= 0:
-            messages.error(request, "stake amount cannot be less than 500")
-            return redirect("base:feed")
+        # if amount < 500 or amount <= 0:
+        #     messages.error(request, "stake amount cannot be less than 500")
+        #     return redirect("base:feed")
         
-        print(prediction, amount, symbol, close)
+        print(prediction, symbol, close)
 
         prediction = Prediction.objects.create(
             user = request.user,
             symbol = symbol,
             close = close,
-            amount = amount,
             prediction = prediction,
         )
-        userprofile.balance -= amount
-        userprofile.save()
+        # userprofile.balance -= amount
+        # userprofile.save()
         prediction.save()
         messages.success(request, "prediction submit successfully")
         return redirect("base:feed")
@@ -180,6 +181,7 @@ def feed(request):
 
     context = {
         "market_data" :  market_data,
+        'prediction_symbols' : prediction_symbol,
     }
 
     return render(request, "base/feed.html", context)

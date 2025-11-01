@@ -26,32 +26,32 @@ def evaluate_predictions():
     """
 
     try:
-        market_data = get_kline.process_data()
-        predictions = Prediction.objects.all()
+        market_data = DailyMarketData.objects.all()
+        predictions = Prediction.objects.filter(status="inplay")
         for prediction in predictions:
             predicted_symbol = prediction.symbol
             predicted_price = prediction.close
             predicted_direction = prediction.prediction
             status = prediction.status
-            if status == "settled":
-                # print(f"prediction by {prediction.user.username} for {prediction.symbol} has been settled")
-                continue
-            else:
-                for data in market_data:
-                    symbol = data['symbol']
-                    close = data['close']
-                    if symbol == predicted_symbol:
-                        if (predicted_direction == "higher" and status == "inplay" and Decimal(close) > predicted_price) or \
-                        (predicted_direction == "lower" and status == "inplay" and Decimal(close) < predicted_price):
-                            prediction.result = "win"
-                            winning =  prediction.amount + prediction.amount
-                            prediction.user.userprofile.balance += winning
-                            prediction.status = "settled"
-                            prediction.save()
-                        else:
-                            prediction.result = "lose"
-                            prediction.status = 'settled'
-                            prediction.save()
+            user = prediction.user
+            user_profile = UserProfile.objects.get(user=user)
+            
+            for data in market_data:
+                symbol = data.symbol
+                close = data.close
+                if symbol == predicted_symbol:
+                    if (predicted_direction == "higher" and status == "inplay" and Decimal(close) > predicted_price) or \
+                    (predicted_direction == "lower" and status == "inplay" and Decimal(close) < predicted_price):
+                        prediction.result = "win"
+                        user_profile.balance += Decimal(10.00)
+                        user_profile.winning += Decimal(10.00)
+                        prediction.status = "settled"
+                        prediction.save()
+                        user_profile.save()
+                    else:
+                        prediction.result = "lose"
+                        prediction.status = 'settled'
+                        prediction.save()
                     # print(f" {prediction.user.username} Prediction for {predicted_symbol} is {prediction.result}. Amount: {prediction.amount}")
         print('done evaluating')
     except Exception as e:

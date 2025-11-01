@@ -46,13 +46,13 @@ class Prediction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     symbol = models.CharField(max_length=20)
     close = models.DecimalField(max_digits=10, decimal_places=2)
-    amount = models.PositiveIntegerField(default=0)
+    # amount = models.PositiveIntegerField(default=0)
     prediction = models.CharField(max_length=10, choices=[("higher", "higher"), ("lower", "lower")])
     result = models.CharField(max_length=10, choices=[("win", "win"), ("lose", "lose")])
-    status = models.CharField(max_length=10, choices=[("settled", "settled"), ("inplay  ", "inplay")], default="inplay")
+    status = models.CharField(max_length=10, choices=[("settled", "settled"), ("inplay", "inplay")], default="inplay")
 
     def __str__(self):
-        return f" {self.user.first_name} |  {self.symbol} | Close: {self.close} | Prediction: {self.prediction} | Result: {self.amount} | {self.result} |  {self.status}"
+        return f" {self.user.first_name} |  {self.symbol} | Close: {self.close} | Prediction: {self.prediction} | Result:  {self.result} |  {self.status}"
 
 
 
